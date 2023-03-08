@@ -12,9 +12,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 
 
 const Cart = () => {
-    const { globalCart, globalWishList } = useContext(IconsContext);
-    const [cart, setCart] = globalCart;
-    const [wishList, setWishList] = globalWishList;
+    const { cart, setCart, wishList, setWishList } = useContext(IconsContext);
 
     const navigate = useNavigate()
 

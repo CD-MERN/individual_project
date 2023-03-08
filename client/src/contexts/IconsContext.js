@@ -32,7 +32,7 @@ const IconsContextProvider = ({ children }) => {
 
 
     return (
-        <IconsContext.Provider value={{ globalCart: [cart, setCart], globalWishList: [wishList, setWishList] }}>
+        <IconsContext.Provider value={{ cart, setCart, wishList, setWishList }}>
             {children}
         </IconsContext.Provider>
     );

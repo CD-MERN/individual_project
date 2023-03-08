@@ -11,9 +11,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Section = () => {
-    const { globalCart, globalWishList } = useContext(IconsContext);
-    const [cart, setCart] = globalCart;
-    const [wishList, setWishList] = globalWishList;
+    const { cart, setCart, wishList, setWishList } = useContext(IconsContext);
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [filter, setFilter] = useState({
@@ -22,8 +20,8 @@ const Section = () => {
     });
 
     useEffect(() => {
-        fetchProducts();
         fetchCategories();
+        fetchProducts();
     }, []);
 
     useEffect(() => {
@@ -119,7 +117,7 @@ const Section = () => {
                         </div>
                     </div>
                     <div className='col-md-10 '>
-                        <div className='row gx-4 gx-lg-5 row-cols-2 row-cols-md-4 row-cols-xl-4 overflow-auto'>
+                        <div className='row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 overflow-auto'>
 
                             {products.map((product, idx) => (
                                 <div className="col mb-5" key={idx}>

@@ -9,9 +9,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 
 const Icons = () => {
-    const { globalCart, globalWishList } = useContext(IconsContext);
-    const [cart, setCart] = globalCart;
-    const [wishList, setWishList] = globalWishList;
+    const { cart, wishList } = useContext(IconsContext);
     const cartRef = useRef();
     const wishListRef = useRef();
     const navigate = useNavigate()
