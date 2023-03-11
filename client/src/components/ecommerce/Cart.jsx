@@ -16,40 +16,37 @@ const Cart = () => {
 
     const navigate = useNavigate()
 
-    const updateQuantity = async (item, value) => {
-        const data = {
-            product: item.product._id,
-            quantity: parseInt(value) - item.quantity,
-        }
-        await axios.put(`http://localhost:8000/api/cart/${cart._id}`, data, { withCredentials: true })
-            .then((response) => {
-                setCart(response.data.cart);
-            })
-            .catch((error) => {
-                console.log("Error", error)
-            })
+    const updateQuantity = (product, value) => {
+        // Find the product and update the qty
+        let newCartList = cart.map((item) => {
+            if (item === product) {
+                return { ...item, quantity: parseInt(value) }
+            }
+            return item;
+        })
+        // Setear manualmente porque si no se renderiza el componente no obtiene del local(esto es solo para no perder al recargar)
+        setCart(newCartList);
+
+        localStorage.setItem("cartList", JSON.stringify(newCartList));
     }
 
-    const removeItem = async (item) => {
-        const data = {
-            product: item.product._id,
-        }
-        await axios.delete(`http://localhost:8000/api/cart/${cart._id}`, { data: data, withCredentials: true })
-            .then((response) => {
-                setCart(response.data.cart);
-            })
-            .catch((error) => {
-                console.log("Error", error)
-            });
+    const removeItem = (product) => {
+       
+        // Remove the product
+        let newCartList = cart.filter((item) => item !== product);
+        setCart(newCartList);
+        localStorage.setItem("cartList", JSON.stringify(newCartList));
     }
 
+    /** 
+     * TODO: MODIFY CONTROLLER 
+     */
     const addToWishList = async (item) => {
 
         const data = {
-            product: item.product._id,
+            product: item._id,
             wishList: wishList._id
         }
-
 
         await axios.put(`http://localhost:8000/api/cart/${cart._id}/move-to-wish-list`, data, { withCredentials: true })
             .then((response) => {
@@ -62,9 +59,10 @@ const Cart = () => {
     }
 
     const totalAmount = () => {
-        if (cart && cart.products) {
-            return cart.products.reduce((curr, next) => {
-                return curr += next.product.price * next.quantity
+
+        if (cart) {
+            return cart.reduce((curr, next) => {
+                return curr += next.price * next.quantity
             }, 0)
         } else {
             return 0;
@@ -94,18 +92,18 @@ const Cart = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {cart?.products && cart.products.map((item, index) => (
+                                        {cart && cart.map((item, index) => (
                                             <tr key={index} className="align-middle text-center">
                                                 <td>{index + 1}</td>
                                                 <td>
-                                                    <span>{item.product.name}</span><br />
-                                                    <span className='text-muted small'>{item.product.description}</span>
+                                                    <span>{item.name}</span><br />
+                                                    <span className='text-muted small'>{item.description}</span>
                                                 </td>
                                                 <td className='col-2'>
                                                     <input type='number' min={1} className='form-control text-center' defaultValue={item.quantity} onInput={(e) => updateQuantity(item, e.target.value)} />
                                                 </td>
-                                                <td className='text-end'>{numberFormatter(item.product.price)}</td>
-                                                <td className='text-end'>{numberFormatter(item.product.price * item.quantity)}</td>
+                                                <td className='text-end'>{numberFormatter(item.price)}</td>
+                                                <td className='text-end'>{numberFormatter(item.price * item.quantity)}</td>
                                                 <td>
                                                     <span className='d-flex gap-3 justify-content-center'>
                                                         <OverlayTrigger
@@ -144,7 +142,7 @@ const Cart = () => {
                                         Total Item
                                     </div>
                                     <div className='col-md-6 text-end'>
-                                        {cart?.products ? cart.products.length : 0}
+                                        {cart ? cart.length : 0}
                                     </div>
                                 </div>
                                 <div className='row justify-align-content-between'>

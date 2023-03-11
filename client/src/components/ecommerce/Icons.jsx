@@ -57,7 +57,7 @@ const Icons = () => {
             <Link className="btn btn-outline-dark" to="/ecommerce/cart">
                 <FontAwesomeIcon icon={faShoppingCart} className="me-1 text-primary" ref={cartRef} />
                 Cart
-                <span className="badge bg-dark text-white ms-1 rounded-pill">{cart?.products ? cart.products.length : 0}</span>
+                <span className="badge bg-dark text-white ms-1 rounded-pill">{cart ? cart.length : 0}</span>
             </Link>
 
             <Link className="border rounded-circle" >

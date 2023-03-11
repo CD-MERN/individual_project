@@ -55,19 +55,33 @@ const Section = () => {
             });
     }
 
-    const addProductToCart = async (product) => {
+    /** 
+     * * Changed, save to local added
+     */
+    const addProductToCart = (product) => {
 
-        const data = {
-            product: product._id,
-            quantity: 1,
+        // Find if the product already exists in the cartList
+        let item = cart.find(item => item._id === product._id);
+        let newCartList = [];
+
+        // If exists update qty
+        if (item) {
+            item.quantity++;
+            newCartList = [...cart];
+        } else {
+            // If not -> add product
+            const data = (({ _id, name, price, description }) => ({ _id, name, price, description }))(product);
+            data.quantity = 1;
+
+            newCartList = [...cart, data];
         }
-        await axios.put(`http://localhost:8000/api/cart/${cart._id}`, data, { withCredentials: true })
-            .then((response) => {
-                setCart(response.data.cart);
-            })
-            .catch((error) => {
-                console.log("Error", error)
-            })
+
+        // Setear manualmente porque si no se renderiza no obtiene del local(esto es solo para no perder al recargar)
+        setCart(newCartList);
+
+        // Save to local storage, se usa json stringify porque osino guarda como [object Object]
+        localStorage.setItem("cartList", JSON.stringify(newCartList));
+
     }
     const addProductToWishList = async (product) => {
 
