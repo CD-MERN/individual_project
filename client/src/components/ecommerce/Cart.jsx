@@ -31,7 +31,7 @@ const Cart = () => {
     }
 
     const removeItem = (product) => {
-       
+
         // Remove the product
         let newCartList = cart.filter((item) => item !== product);
         setCart(newCartList);
@@ -39,19 +39,21 @@ const Cart = () => {
     }
 
     /** 
-     * TODO: MODIFY CONTROLLER 
+     * * Changed
      */
-    const addToWishList = async (item) => {
+    const addToWishList = async (product) => {
 
+        // Get the product to add/move in the wishlist
         const data = {
-            product: item._id,
-            wishList: wishList._id
+            product: product._id,
         }
 
-        await axios.put(`http://localhost:8000/api/cart/${cart._id}/move-to-wish-list`, data, { withCredentials: true })
+        // Update the wishlist
+        await axios.put(`http://localhost:8000/api/wish-list/${wishList._id}`, data, { withCredentials: true })
             .then((response) => {
-                setCart(response.data.cart);
                 setWishList(response.data.wishList);
+                // Remove the product from the cart
+                removeItem(product)
             })
             .catch((error) => {
                 console.log("Error", error)

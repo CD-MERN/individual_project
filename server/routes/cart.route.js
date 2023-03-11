@@ -6,5 +6,5 @@ module.exports = app => {
   app.get('/api/cart/:id', authenticate, CartController.find);
   app.put('/api/cart/:id', authenticate, CartController.update);
   app.delete('/api/cart/:id', authenticate, CartController.delete);
-  app.put('/api/cart/:id/move-to-wish-list', authenticate, CartController.moveToWishList);
+  // app.put('/api/cart/:id/move-to-wish-list', authenticate, CartController.moveToWishList);
 };

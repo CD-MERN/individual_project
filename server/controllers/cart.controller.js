@@ -80,24 +80,29 @@ module.exports.delete = async (req, res) => {
 };
 
 
-module.exports.moveToWishList = async (req, res) => {
-  try {
-    await Cart.updateOne({ _id: req.params.id }, {
-      $pull: { "products": { "product": req.body.product } }
-    });
+// module.exports.moveToWishList = async (req, res) => {
 
-    const c = await Cart.findOne({ _id: req.params.id }).populate('products.product');
+//   try {
+//     console.log(req.body);
 
-    await WishList.updateOne({ _id: req.body.wishList, "products.product": { $ne: req.body.product } }, {
-      $push: { "products": { "product": req.body.product } }
-    });
 
-    const wL = await WishList.findOne({ _id: req.body.wishList }).populate('products.product')
+//     await Cart.updateOne({ _id: req.params.id }, {
+//       $pull: { "products": { "product": req.body.product } }
+//     });
 
-    res.json({ cart: c, wishList: wL });
+//     const c = await Cart.findOne({ _id: req.params.id }).populate('products.product');
 
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: "Something went wrong then move product to WishList", error: error })
-  }
-}
+    
+//     await WishList.updateOne({ _id: req.body.wishList, "products.product": { $ne: req.body.product } }, {
+//       $push: { "products": { "product": req.body.product } }
+//     });
+
+//     const wL = await WishList.findOne({ _id: req.body.wishList }).populate('products.product')
+
+//     res.json({ cart: c, wishList: wL });
+
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).json({ message: "Something went wrong then move product to WishList", error: error })
+//   }
+// }
