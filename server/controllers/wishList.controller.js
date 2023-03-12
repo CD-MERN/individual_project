@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const WishList = require("../models/wishList.model");
-const Cart = require('../models/cart.model');
+// const Cart = require('../models/cart.model');
 const secret = process.env.SECRET_KEY;
 
 module.exports.wishList = (req, res) => {

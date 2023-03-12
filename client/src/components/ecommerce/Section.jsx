@@ -9,6 +9,15 @@ import { faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import toast, { Toaster } from 'react-hot-toast';
+
+// Bootstrap
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Table from 'react-bootstrap/Table';
 
 const Section = () => {
     const { cart, setCart, wishList, setWishList } = useContext(IconsContext);
@@ -115,9 +124,10 @@ const Section = () => {
     }
     return (
         <section >
+            <div><Toaster/></div>
             <div className="container px-4 px-lg-5 mt-5">
-                <div className="row">
-                    <div className='col-md-2'>
+                <Row>
+                    <Col md={2}>
                         <div className="btn-group-vertical w-100" role={'group'}>
                             {categories.map((category, idx) => (
                                 <button key={idx} type="button" className={`btn btn-outline-dark mb-1 ${filter.category === category._id ? 'active' : ''}`} onClick={() => manageFilterCategory(category._id)}>
@@ -130,13 +140,14 @@ const Section = () => {
                             }
 
                         </div>
-                    </div>
-                    <div className='col-md-10 '>
-                        <div className='row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 overflow-auto'>
+                    </Col>
+                    <Col md={10}>
+                        {/* <div className='row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 overflow-auto'> */}
+                        <Row xs={1} md={2} lg={3} xl={4} className='overflow-auto'>
 
                             {products.map((product, idx) => (
                                 <div className="col mb-5" key={idx}>
-                                    <div className="card h-100 p-3">
+                                    <div className="card h-100 p-3 shadow">
                                         {checkIsFavorite(product) ?
                                             <OverlayTrigger
                                                 placement="bottom"
@@ -195,9 +206,9 @@ const Section = () => {
                                     </div>
                                 </div>
                             ))}
-                        </div>
-                    </div>
-                </div>
+                        </Row>
+                    </Col>
+                </Row>
             </div>
         </section>
     )

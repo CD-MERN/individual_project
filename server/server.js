@@ -74,7 +74,7 @@ axios.get('https://dummyjson.com/products')
 //Routes
 require('./routes/product.route')(app);
 require('./routes/category.route')(app);
-require('./routes/cart.route')(app);
+require('./routes/order.routes')(app);
 require('./routes/wishList.route')(app);
 require('./routes/user.route')(app);
 
