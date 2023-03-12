@@ -1,5 +1,5 @@
 const { User } = require('../models/user.model');
-const Cart = require('../models/cart.model');
+const WishList = require('../models/wishList.model');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -33,7 +33,8 @@ module.exports.register = async (req, res) => {
 
     try {
         const newUser = await User.create({ ...req.body, role: 'user', status: true });
-        const cart = await Cart.create({ user: newUser._id, products: [] })
+        // Create the wish list for the user
+        const wishList = await WishList.create({ user: newUser._id, products: [] })
         const userToken = jwt.sign({ _id: newUser._id }, secret_key)
 
         // Contiene el token, mientras no se expire o no haga logout puede utilizar la app, httponly para que la cookie no sea desencriptada

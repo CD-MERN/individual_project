@@ -108,7 +108,8 @@ const Section = () => {
     const checkIsFavorite = (product) => {
         let flag = false
         if (wishList && wishList.products.length) {
-            flag = wishList.products.some(item => item.product._id === product._id);
+            
+            flag = wishList.products.some(item => item._id === product._id);
         }
         return flag;
     }
