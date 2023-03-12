@@ -88,9 +88,11 @@ module.exports.checkUser = async (req, res, next) => {
 };
 
 //log user out
-module.exports.logOut = async (req, res) => {
-    res.cookie('userToken', '', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
-    }); res.status(200).send('user is logged out');
+module.exports.logOut = (req, res) => {
+
+    // Eliminar la cookie
+    res.clearCookie('userToken');
+    // res.status(200).send('user is logged out');
+    res.json({ message: 'User logout' });
+
 };

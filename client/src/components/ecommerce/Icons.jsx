@@ -15,12 +15,14 @@ const Icons = () => {
     const navigate = useNavigate()
 
     const logOut = () => {
-        axios.get('http://localhost:8000/api/logout')
+        axios.get('http://localhost:8000/api/logout', { withCredentials: true, credentials: 'include' })
             .then(() => {
+                
                 navigate('/');
             })
             .catch(err => console.log(err));
     }
+
     useEffect(() => {
         if (cartRef && cartRef.current) {
             cartRef.current.classList.toggle("active");
