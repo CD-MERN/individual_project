@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useContext, useEffect, useRef } from 'react'
@@ -6,6 +5,8 @@ import { IconsContext } from '../../contexts/IconsContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, faHeart, faUser } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 
 
 const Icons = () => {
@@ -17,7 +18,7 @@ const Icons = () => {
     const logOut = () => {
         axios.get('http://localhost:8000/api/logout', { withCredentials: true, credentials: 'include' })
             .then(() => {
-                
+
                 navigate('/');
             })
             .catch(err => console.log(err));
@@ -50,33 +51,38 @@ const Icons = () => {
 
     }, [wishList]);
     return (
-        <div className="d-flex ms-auto gap-3">
-            <Link className="btn btn-outline-dark" to="/ecommerce/wish-list">
-                <FontAwesomeIcon icon={faHeart} className="me-1 text-danger" ref={wishListRef} />
-                WishList
-                <span className="badge bg-dark text-white ms-1 rounded-pill">{wishList?.products ? wishList.products.length : 0}</span>
-            </Link>
-            <Link className="btn btn-outline-dark" to="/ecommerce/cart">
-                <FontAwesomeIcon icon={faShoppingCart} className="me-1 text-primary" ref={cartRef} />
-                Cart
-                <span className="badge bg-dark text-white ms-1 rounded-pill">{cart ? cart.length : 0}</span>
-            </Link>
+        <>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="d-flex ms-auto gap-3 ms-auto">
 
-            <Link className="border rounded-circle" >
+                    <Link className="btn btn-outline-dark  rounded-pill" to="/ecommerce/wish-list">
+                        <FontAwesomeIcon icon={faHeart} className="me-1 text-danger" ref={wishListRef} />
+                        WishList
+                        <span className="badge bg-dark text-white ms-1">{wishList?.products ? wishList.products.length : 0}</span>
+                    </Link>
+                    <Link className="btn btn-outline-dark rounded-pill " to="/ecommerce/cart">
+                        <FontAwesomeIcon icon={faShoppingCart} className="me-1 text-primary" ref={cartRef} />
+                        Cart
+                        <span className="badge bg-dark text-white ms-1 ">{cart ? cart.length : 0}</span>
+                    </Link>
 
+                    <Link className="border rounded-circle" >
+                        <span className="badge bg-dark text-white ms-1 "></span>
+                    </Link>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                            <FontAwesomeIcon icon={faUser} className="me-1 text-white" />
+                        </Dropdown.Toggle>
 
-                <span className="badge bg-dark text-white ms-1 "></span>
-            </Link>
-            <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    <FontAwesomeIcon icon={faUser} className="me-1 text-white" />
-                </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => logOut()}>LogOut</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
 
-                <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => logOut()}>LogOut</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-        </div>
+                </Nav>
+            </Navbar.Collapse>
+        </>
     )
 }
 

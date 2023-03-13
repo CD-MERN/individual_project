@@ -5,7 +5,7 @@ import axios from 'axios'
 import numberFormatter from '../utilities/numberFormatter';
 import { IconsContext } from '../../contexts/IconsContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingCart, faHeartCircleMinus, faHeart } from '@fortawesome/free-solid-svg-icons'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -18,6 +18,9 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
+import Accordion from 'react-bootstrap/Accordion';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Badge from 'react-bootstrap/Badge';
 
 const Section = () => {
     const { cart, setCart, wishList, setWishList } = useContext(IconsContext);
@@ -117,37 +120,65 @@ const Section = () => {
     const checkIsFavorite = (product) => {
         let flag = false
         if (wishList && wishList.products.length) {
-            
+
             flag = wishList.products.some(item => item._id === product._id);
         }
         return flag;
     }
+
+    const deleteFromWishList = async (product) => {
+
+        const data = {
+            product: product._id,
+        }
+
+        await axios.delete(`http://localhost:8000/api/wish-list/${wishList._id}`, { data: data, withCredentials: true })
+            .then((response) => {
+                setWishList(response.data.wishList);
+            })
+            .catch((error) => {
+                console.log("Error", error)
+            });
+    }
+
+
     return (
         <section >
-            <div><Toaster/></div>
+            <div><Toaster /></div>
             <div className="container px-4 px-lg-5 mt-5">
                 <Row>
-                    <Col md={2}>
-                        <div className="btn-group-vertical w-100" role={'group'}>
-                            {categories.map((category, idx) => (
-                                <button key={idx} type="button" className={`btn btn-outline-dark mb-1 ${filter.category === category._id ? 'active' : ''}`} onClick={() => manageFilterCategory(category._id)}>
-                                    <div className='d-flex justify-content-between align-items-center'>
-                                        <span>{category.name}</span>
-                                        <span className="badge bg-light border text-dark rounded-pill">{category.productsCount}</span>
-                                    </div>
-                                </button>
-                            ))
-                            }
+                    <Col xs={12} md={4} xl={3} xxl={2} className='mb-5'>
+                        <Accordion defaultActiveKey='0'>
+                            <Accordion.Item eventKey='0'>
+                                <Accordion.Header><span className='fw-bold'>Categories</span></Accordion.Header>
+                                <Accordion.Body className='p-0'>
+                                    <ListGroup variant='flush'>
+                                        {categories.map((category, idx) => (
+                                            <ListGroup.Item action variant='light' onClick={() => manageFilterCategory(category._id)} key={idx}
+                                                className={`px-2 d-flex justify-content-between align-items-start ${filter.category === category._id ? 'active' : ''} `} >
 
-                        </div>
+                                                <div className="ms-2 me-auto">{category.name}</div>
+                                                {/* Cambia el color del icono si esta activo o no */}
+                                                <Badge bg={filter.category === category._id ? 'light' : 'secondary'}
+                                                    text={filter.category === category._id ? 'dark' : 'light'}
+                                                    pill>{category.productsCount}</Badge>
+
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
                     </Col>
-                    <Col md={10}>
-                        {/* <div className='row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 overflow-auto'> */}
-                        <Row xs={1} md={2} lg={3} xl={4} className='overflow-auto'>
+                    <Col xs={12} md={8} xl={9} xxl={10}>
+                        
+                        {products.length === 0 && <p className='text-center fs-2 text-secondary mb-5'>We don´t have any products under this category yet...</p>}
+
+                        <Row xs={1} md={2} xl={3} xxl={4} className='overflow-auto'>
 
                             {products.map((product, idx) => (
                                 <div className="col mb-5" key={idx}>
-                                    <div className="card h-100 p-3 shadow">
+                                    <div className="card h-100 p-3 shadow rounded-4">
                                         {checkIsFavorite(product) ?
                                             <OverlayTrigger
                                                 placement="bottom"
@@ -180,14 +211,14 @@ const Section = () => {
                                                 <span className="visually-hidden">Next</span>
                                             </button>
                                         </div>
-                                        <div className="card-body p-4">
+                                        <div className="card-body">
                                             <div className="text-center">
                                                 <h5 className="fw-bolder">{product.name}</h5>
 
                                                 <div>{numberFormatter(product.price)}</div>
                                             </div>
                                         </div>
-                                        <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                        <div className="card-footer border-top-0 bg-transparent">
                                             <div className="d-flex gap-3 justify-content-center">
                                                 <OverlayTrigger
                                                     placement="bottom"
@@ -195,12 +226,27 @@ const Section = () => {
                                                 >
                                                     <button type='button' className="btn btn-outline-primary" onClick={() => addProductToCart(product)}><FontAwesomeIcon icon={faShoppingCart} /></button>
                                                 </OverlayTrigger>
-                                                <OverlayTrigger
-                                                    placement="bottom"
-                                                    overlay={<Tooltip>Add to Wish List</Tooltip>}
-                                                >
-                                                    <button type='button' className="btn btn-outline-danger" onClick={() => addProductToWishList(product)}><FontAwesomeIcon icon={faHeart} /></button>
-                                                </OverlayTrigger>
+
+                                                {/* No Favorite - Add to wishlist */}
+                                                {!checkIsFavorite(product) && (
+                                                    <OverlayTrigger
+                                                        placement="bottom"
+                                                        overlay={<Tooltip>Add to Wish List</Tooltip>}
+                                                    >
+                                                        <button type='button' className="btn btn-outline-danger" onClick={() => addProductToWishList(product)}><FontAwesomeIcon icon={faHeart} /></button>
+                                                    </OverlayTrigger>
+                                                )}
+
+                                                {/* Favorite - Remove to wishlist */}
+                                                {checkIsFavorite(product) && (
+                                                    <OverlayTrigger
+                                                        placement="bottom"
+                                                        overlay={<Tooltip>Remove from Wish List</Tooltip>}
+                                                    >
+                                                        <button type='button' className="btn btn-danger" onClick={() => deleteFromWishList(product)}><FontAwesomeIcon icon={faHeartCircleMinus} /></button>
+                                                    </OverlayTrigger>
+                                                )}
+
                                             </div>
                                         </div>
                                     </div>

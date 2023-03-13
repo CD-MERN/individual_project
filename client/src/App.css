@@ -35,3 +35,10 @@
 .favorite {
   z-index: 2;
 }
+
+/* Logo name */
+@media(max-width: 600px) { 
+  #logoname { 
+    display: none; 
+  }
+}
