@@ -72,11 +72,11 @@ axios.get('https://dummyjson.com/products')
     });
 
 //Routes
-require('./routes/product.route')(app);
-require('./routes/category.route')(app);
+require('./routes/product.routes')(app);
+require('./routes/category.routes')(app);
 require('./routes/order.routes')(app);
-require('./routes/wishList.route')(app);
-require('./routes/user.route')(app);
+require('./routes/wishList.routes')(app);
+require('./routes/user.routes')(app);
 
 const server = app.listen(8000, () => {
     console.log("Listening at Port 8000");
