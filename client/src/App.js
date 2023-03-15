@@ -10,6 +10,9 @@ import { default as Products } from './components/admin/products/List';
 import { default as ProductsForm } from './components/admin/products/Form';
 import { default as Categories } from './components/admin/categories/List';
 import { default as CategoriesForm } from './components/admin/categories/Form';
+
+import { default as UserForm } from './components/admin/users/Form';
+
 import Login from './components/Login';
 import Register from './components/Register';
 import { IconsContextProvider } from "./contexts/IconsContext";
@@ -48,6 +51,10 @@ const App = () => {
           <Route path="/admin/categories" element={<Categories />} />
           <Route path="/admin/categories/create" element={<CategoriesForm editMode={false} />} />
           <Route path="/admin/categories/:id/edit" element={<CategoriesForm editMode={true} />} />
+
+          <Route path="/admin/user/create" element={<UserForm editMode={false} />} />
+          <Route path="/admin/user/:id/edit" element={<UserForm editMode={true} />} />
+
         </Routes>
       </BrowserRouter>
     </div>

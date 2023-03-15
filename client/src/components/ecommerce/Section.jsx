@@ -18,6 +18,7 @@ const Section = () => {
         category: null,
         search: null
     });
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         fetchCategories();
@@ -27,7 +28,6 @@ const Section = () => {
     useEffect(() => {
         searchProduct();
     }, [filter]);
-
 
     const fetchProducts = () => {
         axios.get('http://localhost:8000/api/products', { withCredentials: true })
@@ -54,7 +54,19 @@ const Section = () => {
                 console.log("Error", error)
             });
     }
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //Search Product 
 
+    const productSearch = async () => {
+        await axios.get(`http://localhost:8000/api/products/search/${search}`, { withCredentials: true })
+            .then((response) => {
+                setProducts(response.data.products);
+            })
+            .catch((error) => {
+                console.log("Error", error)
+            });
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     const addProductToCart = async (product) => {
 
         const data = {
@@ -102,6 +114,7 @@ const Section = () => {
         <section >
             <div className="container px-4 px-lg-5 mt-5">
                 <div className="row">
+
                     <div className='col-md-2'>
                         <div className="btn-group-vertical w-100" role={'group'}>
                             {categories.map((category, idx) => (
@@ -113,12 +126,20 @@ const Section = () => {
                                 </button>
                             ))
                             }
-
                         </div>
                     </div>
                     <div className='col-md-10 '>
+{/* //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
+                        {/* Search Product */}
+                        <div className="container-fluid" >
+                            <form className="d-flex" role="search">
+                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearch(e.target.value)} />
+                                <button className="btn btn-outline-success" type="button" onClick={productSearch}>Search</button>
+                            </form>
+                        </div>
+                        <br></br>
+{/* //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
                         <div className='row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 overflow-auto'>
-
                             {products.map((product, idx) => (
                                 <div className="col mb-5" key={idx}>
                                     <div className="card h-100 p-3">

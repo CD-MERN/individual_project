@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
 const List = () => {
     const [users, setUsers] = useState([]);
@@ -50,6 +53,16 @@ const List = () => {
                                         <td>
                                             <span className={`badge ${user.status ? 'bg-success' : 'bg-secondary'}`}>{`${user.status ? 'Active' : 'Inactive'}`}</span>
                                         </td>
+                                        <td><span className='d-flex gap-3 justify-content-center'>
+                                            <OverlayTrigger
+                                                placement="bottom"
+                                                overlay={<Tooltip>Edit User</Tooltip>}
+                                            >
+                                                <Link className='btn btn-warning text-white'
+                                                    to={`/admin/user/${user._id}/edit`}
+                                                ><FontAwesomeIcon icon={faEdit} /></Link>
+                                            </OverlayTrigger>
+                                        </span></td>
                                     </tr>
 
                                 ))}
@@ -66,8 +79,3 @@ const List = () => {
 }
 
 export default List
-
-
-
-
-
