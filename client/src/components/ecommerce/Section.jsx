@@ -56,6 +56,12 @@ const Section = () => {
     }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     //Search Product 
+    const handlekeyPress = (e) => {
+        if(e.key === 'Enter'){
+            productSearch()
+        }
+    };
+    
     const productSearch = async () => {
         await axios.get(`http://localhost:8000/api/products/search/${search}`, { withCredentials: true })
             .then((response) => {
@@ -131,8 +137,8 @@ const Section = () => {
 {/* //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
                         {/* Search Product */}
                         <div className="container-fluid" >
-                            <form className="d-flex" role="search">
-                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearch(e.target.value)} />
+                            <form className="d-flex" role="search" >
+                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearch(e.target.value)} onKeyDown={handlekeyPress}/>
                                 <button className="btn btn-outline-success" type="button" onClick={productSearch}>Search</button>
                             </form>
                         </div>
