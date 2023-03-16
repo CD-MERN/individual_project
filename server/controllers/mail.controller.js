@@ -1,8 +1,10 @@
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const IPADRESS = process.env.IPADRESS;
+const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 
-const { EMAIL, PASSWORD } = {EMAIL:"cbrizuela.2007@gmail.com",PASSWORD: "eeuqoxcphofcizzy"}
+const { EMAIL, PASSWORD } = { EMAIL: EMAIL_ADDRESS, PASSWORD: EMAIL_PASSWORD }
 
 const enviarCorreo = (req, res) => {
 
@@ -10,8 +12,8 @@ const enviarCorreo = (req, res) => {
     console.log(userEmail, user)
 
     let config = {
-        service : 'gmail',
-        auth : {
+        service: 'gmail',
+        auth: {
             user: EMAIL,
             pass: PASSWORD
         }
@@ -21,9 +23,9 @@ const enviarCorreo = (req, res) => {
 
     let MailGenerator = new Mailgen({
         theme: "neopolitan",
-        product : {
-            name: "Awesome Ecommerce", 
-            link : IPADRESS,
+        product: {
+            name: "Awesome Ecommerce",
+            link: IPADRESS,
             logo: 'https://thumbs2.imgbox.com/4b/97/3omxAvKG_t.png',
             // logo: 'https://thumbs2.imgbox.com/d2/05/1WKmJ1bM_t.jpeg',
             // // Custom logo height
@@ -33,12 +35,12 @@ const enviarCorreo = (req, res) => {
 
     let email = {
         body: {
-            name : user,
+            name: user,
             intro: "¡Tu cuenta ha sido creada con éxito!",
-            action:{
+            action: {
                 instructions: 'Para visitar nuestra tienda, haz click aquí:',
-                button:{
-                    color:"#4dbfbf",
+                button: {
+                    color: "#4dbfbf",
                     text: 'Ir a la tienda',
                     link: IPADRESS
                 }
@@ -59,8 +61,8 @@ const enviarCorreo = (req, res) => {
     let emailBody = MailGenerator.generate(email)
 
     let message = {
-        from : EMAIL,
-        to : userEmail,
+        from: EMAIL,
+        to: userEmail,
         subject: "Awesome Eommerce - Cuenta creada con Éxito",
         html: emailBody
     }
