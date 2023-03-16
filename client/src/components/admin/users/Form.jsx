@@ -18,6 +18,57 @@ const Form = ({ editMode }) => {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const onSubmitHandler = (event) => {
+        event.preventDefault();
+        if (editMode) {
+            updateUser();
+        } else {
+            createUsers();
+        }
+    }
+
+    const createUsers = () => {
+        const data = {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            email: email.value,
+            password: password.value,
+            confirmPassword: confirmPassword.value,
+            status: status,
+            role: role
+        }
+        axios.post('http://localhost:8000/api/create', data, { withCredentials: true })
+            .then(() => {
+                reset();
+                navigate('/admin/users');
+            })
+            .catch((error) => {
+                const errors = error.response.data.errors;
+                setErrors(errors);
+            })
+    }
+
+    const updateUser = async () => {
+        const data = {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            email: email.value,
+            password: password.value,
+            confirmPassword: confirmPassword.value,
+            status: status,
+            role: role
+        }
+        await axios.put(`http://localhost:8000/api/user/${id}`, data, { withCredentials: true })
+            .then(() => {
+                reset();
+                navigate('/admin/users')
+            })
+            .catch((error) => {
+                const errors = error.response.data.errors;
+                setErrors(errors);
+            })
+    }
+
     const setErrors = (errors) => {
 
         if (errors.firstName) {
@@ -64,30 +115,21 @@ const Form = ({ editMode }) => {
     }
 
     const reset = () => {
-        setFirstName({ value: '', error: ''});
+        setFirstName({ value: '', error: '' });
     }
 
     useEffect(() => {
         if (editMode && id) {
             reset();
-            fetchUser();
+            fetchData();
         }
     }, []);
 
-
-    const fetchUser = async () => {
-        const data = {
-            firstName: firstName.value, 
-            lastName: lastName.value, 
-            email: email.value, 
-            password: password.value, 
-            confirmPassword: confirmPassword.value, 
-            status: status, 
-            role: role
-        }
-        await axios.get(`http://localhost:8000/api/user/${id}/edit`, data, { withCredentials: true})
+    const fetchData =  () => {
+        axios.get(`http://localhost:8000/api/user/${id}`, { withCredentials: true })
             .then((response) => {
-                const data = response.data.product;
+                const data = response.data.user;
+                console.log(data)
                 reset();
                 setFirstName({ ...firstName, value: data.firstName });
                 setLastName({ ...lastName, value: data.lastName });
@@ -98,38 +140,8 @@ const Form = ({ editMode }) => {
                 setRole({ ...role, value: data.role });
             })
             .catch((error) => {
-                navigate('/error')
+                //navigate('/error')
             });
-    }
-
-    const onSubmitHandler = (event) => {
-        event.preventDefault();
-        if (editMode) {
-        //      updateProduct();
-        } else {
-            createUsers();
-        }
-    }
-
-    const createUsers = () => {
-        const data = {
-            firstName: firstName.value, 
-            lastName: lastName.value, 
-            email: email.value, 
-            password: password.value, 
-            confirmPassword: confirmPassword.value, 
-            status: status, 
-            role: role
-        }
-        axios.post('http://localhost:8000/api/create', data, { withCredentials: true })
-            .then(() => {
-                reset();
-                navigate('/admin/users');
-            })
-            .catch((error) => {
-                const errors = error.response.data.errors;
-                setErrors(errors);
-            })
     }
 
     return (
@@ -147,50 +159,50 @@ const Form = ({ editMode }) => {
                                         {/* <!-- Form Group (First name)--> */}
                                         <div className="col-md-6">
                                             <label className="small mb-1" htmlFor="inputFirstName">First name</label>
-                                            <input  className={`form-control ${firstName.error.length ? 'border-danger' : ''}`} id="inputFirstName" type="text" placeholder="Enter your first name" defaultValue={firstName.value} onChange={(e) => setFirstName({ ...firstName, value: e.target.value })} />
+                                            <input className={`form-control ${firstName.error.length ? 'border-danger' : ''}`} id="inputFirstName" type="text" placeholder="Enter your first name" value={firstName.value} onChange={(e) => setFirstName({ ...firstName, value: e.target.value })} />
                                             {firstName.error.length ?
-                                                    <small className='text-danger'>{firstName.error}</small> : ''
-                                                }
+                                                <small className='text-danger'>{firstName.error}</small> : ''
+                                            }
                                         </div>
                                         {/* <!-- Form Group (Last name)--> */}
                                         <div className="col-md-6">
                                             <label className="small mb-1" htmlFor="inputLastName">Last name</label>
                                             <input className={`form-control ${lastName.error.length ? 'border-danger' : ''}`} id="inputLastName" type="text" placeholder="Enter your last name" value={lastName.value} onChange={(e) => setLastName({ ...lastName, value: e.target.value })} />
                                             {lastName.error.length ?
-                                                    <small className='text-danger'>{lastName.error}</small> : ''
-                                                }
+                                                <small className='text-danger'>{lastName.error}</small> : ''
+                                            }
                                         </div>
                                     </div>
                                     {/* <!-- Form Group (Email)--> */}
                                     <div className="mb-3">
                                         <label className="small mb-1" htmlFor="inputEmailAddress">Email address</label>
                                         <input className={`form-control ${email.error ? 'border-danger' : ''}`} id="inputEmailAddress" type="email" placeholder="Enter your email address" value={email.value} onChange={(e) => setEmail({ ...email, value: e.target.value })} />
-                                        {email.error?
-                                                    <small className='text-danger'>{email.error}</small> : ''
-                                                }
+                                        {email.error ?
+                                            <small className='text-danger'>{email.error}</small> : ''
+                                        }
                                     </div>
                                     {/* <!-- Form Group (Password))--> */}
                                     <div className="row gx-3 mb-3">
                                         <div className="col-md-6">
                                             <label className="small mb-1" htmlFor="password">Password</label>
                                             <input className={`form-control ${password.error ? 'border-danger' : ''}`} id="password" type="password" placeholder="Enter Password" value={password.value} onChange={(e) => setPassword({ ...password, value: e.target.value })} />
-                                            {password.error.length?
-                                                    <small className='text-danger'>{password.error}</small> : ''
-                                                }
+                                            {password.error.length ?
+                                                <small className='text-danger'>{password.error}</small> : ''
+                                            }
                                         </div>
                                         <div className="col-md-6">
                                             <label className="small mb-1" htmlFor="currentPassword"> Current Password</label>
                                             <input className={`form-control ${confirmPassword.error.length ? 'border-danger' : ''}`} id="currentPassword" type="password" placeholder="Enter current password" value={confirmPassword.value} onChange={(e) => setConfirmPassword({ ...confirmPassword, value: e.target.value })} />
-                                            {confirmPassword.error.length?
-                                                    <small className='text-danger'>{confirmPassword.error.length}</small> : ''
-                                                }
+                                            {confirmPassword.error.length ?
+                                                <small className='text-danger'>{confirmPassword.error.length}</small> : ''
+                                            }
                                         </div>
                                     </div>
                                     {/* <!-- Form Group (Status))--> */}
                                     <div className="row gx-3 mb-3">
                                         <div className="col-md-6">
                                             <label className="small mb-1" htmlFor="StatusUser">Status User</label>
-                                            <select className="form-select" aria-label="Default select example" value={status} onChange={ (e) => {setStatus(e.target.value)}} >
+                                            <select className="form-select" aria-label="Default select example" value={status} onChange={(e) => { setStatus(e.target.value) }} >
                                                 {/* <option selected>Select Status User</option> */}
                                                 <option value="true">Active</option>
                                                 <option value="false">Inactive</option>
@@ -198,7 +210,7 @@ const Form = ({ editMode }) => {
                                         </div>
                                         <div className="col-md-6">
                                             <label className="small mb-1" htmlFor="StatusUser">Role User</label>
-                                            <select className="form-select" aria-label="Default select example" value={role} onChange={(e) => {setRole(e.target.value)}} >
+                                            <select className="form-select" aria-label="Default select example" value={role} onChange={(e) => { setRole(e.target.value) }} >
                                                 {/* <option selected>Select Role User</option> */}
                                                 <option value="admin">Admin</option>
                                                 <option value="user">User</option>

@@ -153,3 +153,9 @@ module.exports.logOut = async (req, res) => {
         httpOnly: true
     }); res.status(200).send('user is logged out');
 };
+
+module.exports.find = (req, res) => {
+    User.findOne({ _id: req.params.id })
+      .then((user) => res.json({ user: user }))
+      .catch((error) => res.status(400).json({ message: "Something went wrong then find a category", error: error }));
+  };
