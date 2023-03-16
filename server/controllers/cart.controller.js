@@ -15,7 +15,7 @@ module.exports.cart = (req, res) => {
           }
           await res.json({ cart: cart })
         })
-        .catch((error) => res.status(400).json({ message: "Something went wrong then find a cart", error: error }));
+        .catch(async (error) => await res.status(400).json({ message: "Something went wrong then find a cart", error: error }));
     }
   });
 };

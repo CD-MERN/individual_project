@@ -7,14 +7,14 @@ module.exports.wishList = (req, res) => {
   jwt.verify(req.cookies.userToken, secret, (err, payload) => {
     if (!err) {
       WishList.findOne({ user: payload._id }).populate('products.product')
-        .then((wishList) => {
+        .then(async (wishList) => {
           if (!wishList) {
             const newWishList = WishList.create({ user: payload._id, products: [] })
-            res.json({ wishList: newWishList })
+            await res.json({ wishList: newWishList })
           }
-          res.json({ wishList: wishList })
+          await res.json({ wishList: wishList })
         })
-        .catch((error) => res.status(400).json({ message: "Something went wrong then find a wishList", error: error }));
+        .catch(async (error) => await res.status(400).json({ message: "Something went wrong then find a wishList", error: error }));
     }
   });
 };
