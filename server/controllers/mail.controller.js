@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
+const IPADRESS = process.env.IPADRESS;
 
 const { EMAIL, PASSWORD } = {EMAIL:"cbrizuela.2007@gmail.com",PASSWORD: "eeuqoxcphofcizzy"}
 
@@ -22,11 +23,11 @@ const enviarCorreo = (req, res) => {
         theme: "neopolitan",
         product : {
             name: "Awesome Ecommerce", 
-            link : 'https://www.amazon.com/-/es/',
-            logo: 'https://images2.imgbox.com/cb/50/V1c1Swl2_o.jpeg',
+            link : IPADRESS,
+            logo: 'https://thumbs2.imgbox.com/4b/97/3omxAvKG_t.png',
             // logo: 'https://thumbs2.imgbox.com/d2/05/1WKmJ1bM_t.jpeg',
             // // Custom logo height
-            logoHeight: '50px',
+            logoHeight: '150px',
         }
     })
 
@@ -39,7 +40,7 @@ const enviarCorreo = (req, res) => {
                 button:{
                     color:"#4dbfbf",
                     text: 'Ir a la tienda',
-                    link: "https://www.amazon.com/-/es/"
+                    link: IPADRESS
                 }
             },
             // table : {
