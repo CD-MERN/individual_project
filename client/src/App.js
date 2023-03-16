@@ -21,9 +21,9 @@ const App = () => {
     
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<Portada />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/portada' element={<Portada />} />
+          <Route path='/login' element={<Login />} />
 
 
 
