@@ -1,5 +1,5 @@
 const { User } = require('../models/user.model');
-const Cart = require('../models/cart.model');
+const WishList = require('../models/wishList.model');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -17,6 +17,8 @@ User.findOne({ email: 'federicko94@gmail.com' }).then(user => {
             password: process.env.PASSWORD,
             role: 'admin',
             status: true
+        }).then(userCreated => {
+            WishList.create({ user: userCreated._id, products: [] })
         })
     }
 });
@@ -33,7 +35,8 @@ module.exports.register = async (req, res) => {
 
     try {
         const newUser = await User.create({ ...req.body, role: 'user', status: true });
-        const cart = await Cart.create({ user: newUser._id, products: [] })
+        // Create the wish list for the user
+        const wishList = await WishList.create({ user: newUser._id, products: [] })
         const userToken = jwt.sign({ _id: newUser._id }, secret_key)
 
         // Contiene el token, mientras no se expire o no haga logout puede utilizar la app, httponly para que la cookie no sea desencriptada
@@ -76,11 +79,13 @@ module.exports.logIn = async (req, res) => {
 }
 
 //log user out
-module.exports.logOut = async (req, res) => {
-    res.cookie('userToken', '', {
-        expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
-    }); res.status(200).send('user is logged out');
+module.exports.logOut = (req, res) => {
+
+    // Eliminar la cookie
+    res.clearCookie('userToken');
+    // res.status(200).send('user is logged out');
+    res.json({ message: 'User logout' });
+
 };
 
 //check if user is logged in

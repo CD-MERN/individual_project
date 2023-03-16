@@ -14,10 +14,12 @@ import Tooltip from 'react-bootstrap/Tooltip';
 const Cart = () => {
     const { cart, setCart, wishList, setWishList } = useContext(IconsContext);
 
-    const removeItem = async (item) => {
+    const deleteFromWishList = async (product) => {
+
         const data = {
-            product: item.product._id,
+            product: product._id,
         }
+
         await axios.delete(`http://localhost:8000/api/wish-list/${wishList._id}`, { data: data, withCredentials: true })
             .then((response) => {
                 setWishList(response.data.wishList);
@@ -27,22 +29,35 @@ const Cart = () => {
             });
     }
 
-    const addToCart = async (item) => {
+    const moveToCart = async (product) => {
 
-        const data = {
-            product: item.product._id,
-            cart: cart._id
-        }
+        try {
+            // Find if the product already exists in the cartList
+            let item = cart.find(item => item._id === product._id);
+            let newCartList = [];
 
+            // If exists update qty
+            if (item) {
+                item.quantity++;
+                newCartList = [...cart];
+            } else {
+                // If not -> add product
+                const data = (({ _id, name, price, description }) => ({ _id, name, price, description }))(product);
+                data.quantity = 1;
+                // console.log({data: data});
+                newCartList = [...cart, data];
+            }
 
-        await axios.put(`http://localhost:8000/api/wish-list/${wishList._id}/move-to-cart`, data, { withCredentials: true })
-            .then((response) => {
-                setCart(response.data.cart);
-                setWishList(response.data.wishList);
-            })
-            .catch((error) => {
-                console.log("Error", error)
-            })
+            setCart(newCartList);
+
+            localStorage.setItem("cartList", JSON.stringify(newCartList));
+
+            // Remover el item del wishlist
+            deleteFromWishList(product);
+            
+        } catch (error) {
+            console.log("Error", error);
+        } 
     }
 
     return (
@@ -70,25 +85,25 @@ const Cart = () => {
                                             <tr key={index} className="align-middle text-center">
                                                 <td>{index + 1}</td>
                                                 <td>
-                                                    <span>{item.product.name}</span><br />
-                                                    <span className='text-muted small'>{item.product.description}</span>
+                                                    <span>{item.name}</span><br />
+                                                    <span className='text-muted small'>{item.description}</span>
                                                 </td>
 
-                                                <td className='text-end'>{numberFormatter(item.product.price)}</td>
-                                                <td className='text-end'>{item.product.stock}</td>
+                                                <td className='text-end'>{numberFormatter(item.price)}</td>
+                                                <td className='text-end'>{item.stock}</td>
                                                 <td>
                                                     <span className='d-flex gap-3 justify-content-center'>
                                                         <OverlayTrigger
                                                             placement="bottom"
-                                                            overlay={<Tooltip>Add To Cart</Tooltip>}
+                                                            overlay={<Tooltip>Move To Cart</Tooltip>}
                                                         >
-                                                            <FontAwesomeIcon icon={faShoppingCart} className="me-1 text-primary cursor-pointer" onClick={() => addToCart(item)} />
+                                                            <FontAwesomeIcon icon={faShoppingCart} className="me-1 text-primary cursor-pointer" onClick={() => moveToCart(item)} />
                                                         </OverlayTrigger>
                                                         <OverlayTrigger
                                                             placement="bottom"
                                                             overlay={<Tooltip>Delete from WishList</Tooltip>}
                                                         >
-                                                            <FontAwesomeIcon icon={faTrash} className="me-1 text-secondary cursor-pointer" onClick={() => removeItem(item)} />
+                                                            <FontAwesomeIcon icon={faTrash} className="me-1 text-secondary cursor-pointer" onClick={() => deleteFromWishList(item)} />
                                                         </OverlayTrigger>
                                                     </span>
                                                 </td>
