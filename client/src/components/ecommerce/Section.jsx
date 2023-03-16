@@ -31,6 +31,7 @@ const Section = () => {
         category: null,
         search: null
     });
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         fetchCategories();
@@ -40,7 +41,6 @@ const Section = () => {
     useEffect(() => {
         searchProduct();
     }, [filter]);
-
 
     const fetchProducts = () => {
         axios.get('http://localhost:8000/api/products', { withCredentials: true })
@@ -67,11 +67,25 @@ const Section = () => {
                 console.log("Error", error)
             });
     }
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //Search Product
+    const handlekeyPress = (e) => {
+        if (e.key === 'Enter') {
+            productSearch()
+        }
+    };
 
-    /** 
-     * * Changed, save to local added
-     */
-    const addProductToCart = (product) => {
+    const productSearch = async () => {
+        await axios.get(`http://localhost:8000/api/products/search/${search}`, { withCredentials: true })
+            .then((response) => {
+                setProducts(response.data.products);
+            })
+            .catch((error) => {
+                console.log("Error", error)
+            });
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    const addProductToCart = async (product) => {
 
         // Find if the product already exists in the cartList
         let item = cart.find(item => item._id === product._id);
@@ -172,6 +186,15 @@ const Section = () => {
                         </Accordion>
                     </Col>
                     <Col xs={12} md={8} xl={9} xxl={10}>
+
+                        {/* Search Product */}
+                        <div className="container-fluid" >
+                            <form className="d-flex" role="search" >
+                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearch(e.target.value)} onKeyDown={handlekeyPress} />
+                                <button className="btn btn-outline-success" type="button" onClick={productSearch}>Search</button>
+                            </form>
+                        </div>
+                        <br></br>
 
                         {products.length === 0 && <p className='text-center fs-2 text-secondary mb-5'>We don´t have any products under this category yet...</p>}
 

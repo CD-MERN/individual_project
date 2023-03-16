@@ -6,6 +6,10 @@ module.exports = app => {
   app.get('/api/products', authenticate, ProductController.all)
   app.post('/api/products/create', authenticate, ProductController.create);
   app.get('/api/products/search', authenticate, ProductController.search);
+
+  //Search Product
+  app.get('/api/products/search/:search', authenticate, ProductController.productSearch);
+
   app.get('/api/products/:id', authenticate, ProductController.find);
   app.put('/api/products/:id', authenticate, ProductController.update);
   app.delete('/api/products/:id', authenticate, ProductController.delete);

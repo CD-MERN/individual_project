@@ -50,6 +50,64 @@ module.exports.register = async (req, res) => {
     }
 }
 
+//Create
+module.exports.create = async (req, res) => {
+
+    try {
+        const newUser = await User.create({ ...req.body });
+        const cart = await Cart.create({ user: newUser._id, products: [] })
+        const userToken = jwt.sign({ _id: newUser._id }, secret_key)
+
+        // Contiene el token, mientras no se expire o no haga logout puede utilizar la app, httponly para que la cookie no sea desencriptada
+        res.status(201).cookie('userToken', userToken, secret_key, { httpOnly: true })
+            .json({ successMessage: "Register succesfully, has a cookie" })
+
+        console.log("Usertoken register", userToken);
+    }
+    catch (error) {
+        res.status(400).json(error);
+    }
+}
+
+module.exports.update = (req, res) => {
+    try {
+        // Get the token
+        const token = String(req?.headers?.authorization?.replace());
+        const decoded = jwt.verify(token, secret_key);
+        User.findByIdAndUpdate({ _id: decoded._id }, req.body, { runValidators: true })
+            .then(response => {
+                res.json(response);
+                console.log("User udpated succesfully", userToken);
+            })
+            .catch((error) => {
+                console.log("Something went wrong (update)", error);
+                res.status(400).json(error)
+            });
+
+
+    } catch (error) {
+        console.log("Something went wrong (update token)", error);
+    }
+
+}
+
+module.exports.delete = (req, res) => {
+    try {
+        User.findByIdAndDelete(req.params.id)
+            .then((response) => {
+                res.json(response);
+                console.log("User delete succesfully");
+            })
+            .catch((error) => {
+                console.log("Something went wrong (delete user)", error);
+                res.status(400).json(error)
+            });
+    } catch (error) {
+        console.log("Something went wrong (delete token)", error);
+    }
+}
+
+
 //Login
 module.exports.logIn = async (req, res) => {
 
@@ -71,7 +129,7 @@ module.exports.logIn = async (req, res) => {
                             await res.status(400).json({ message: "invalid login attempt" });// Si no es correcta la contraseña emitir un error
                         }
                     })
-                    .catch(err => res.status(400).json({ message: "invalid login attempt" }));
+                    .catch(err => res.status(400).json({ message: "invalid login attempt 2" }));
             }
         })
         .catch(err => res.status(400).json(err));
@@ -108,7 +166,10 @@ module.exports.isLogged = (req, res) => {
         res.status(200).send({ currentUser });
     }
 
+};
 
-
-
+module.exports.find = (req, res) => {
+    User.findOne({ _id: req.params.id })
+        .then((user) => res.json({ user: user }))
+        .catch((error) => res.status(400).json({ message: "Something went wrong then find a category", error: error }));
 };

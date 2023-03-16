@@ -32,6 +32,7 @@ module.exports.delete = (req, res) => {
 };
 
 module.exports.search = (req, res) => {
+
   let filter = {}
 
   if (req.query.category) {
@@ -41,3 +42,13 @@ module.exports.search = (req, res) => {
     .then((products) => res.json({ products: products }))
     .catch((error) => res.status(400).json({ message: "Something went wrong then find a product", error: error }));
 };
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Search Products
+module.exports.productSearch = (req, res) => {
+  const search = req.params.search
+  Product.find({ $text: { $search: search, $caseSensitive: false } }).populate('categories')
+    .then((products) => res.json({ products: products }))
+    .catch((error) => res.status(400).json({ message: "Something went wrong then find a product", error: error }));
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

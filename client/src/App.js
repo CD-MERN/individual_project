@@ -6,10 +6,13 @@ import { default as Cart } from './components/ecommerce/Cart';
 import { default as WishList } from './components/ecommerce/WishList';
 import { default as Admin } from './components/admin/Main';
 import { default as Users } from './components/admin/users/List';
+import { default as UserForm } from './components/admin/users/Form';
 import { default as Products } from './components/admin/products/List';
 import { default as ProductsForm } from './components/admin/products/Form';
 import { default as Categories } from './components/admin/categories/List';
 import { default as CategoriesForm } from './components/admin/categories/Form';
+
+
 import Login from './components/Login';
 import Register from './components/Register';
 import EcommerceRoute from './routes/EcommerceRoute';
@@ -43,6 +46,10 @@ const App = () => {
               <Route path="/admin/categories" element={<Categories />} />
               <Route path="/admin/categories/create" element={<CategoriesForm editMode={false} />} />
               <Route path="/admin/categories/:id/edit" element={<CategoriesForm editMode={true} />} />
+
+              <Route path="/admin/user/create" element={<UserForm editMode={false} />} />
+              <Route path="/admin/user/:id/edit" element={<UserForm editMode={true} />} />
+
             </Route>
           </Route>
         </Routes>
