@@ -117,7 +117,7 @@ const Cart = () => {
 
                 <Row>
                     <Col xs={12} lg={8}>
-                        <Card className='mb-5 shadow'>
+                        <Card className='shadow'>
                             <Card.Body className='p-5'>
                                 <h5 className='fw-bold'>Items</h5>
                                 <hr />
@@ -174,7 +174,7 @@ const Cart = () => {
                         </Card>
                     </Col>
                     <Col xs={12} lg={4}>
-                        <Card className='shadow'>
+                        <Card className='shadow h-100'>
                             <Card.Body className='p-5 text-start'>
                                 <h5 className='fw-bold'>Summary</h5>
                                 <hr />

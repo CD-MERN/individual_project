@@ -17,6 +17,8 @@ User.findOne({ email: 'federicko94@gmail.com' }).then(user => {
             password: process.env.PASSWORD,
             role: 'admin',
             status: true
+        }).then(userCreated => {
+            WishList.create({ user: userCreated._id, products: [] })
         })
     }
 });

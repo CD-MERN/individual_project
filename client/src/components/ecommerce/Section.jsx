@@ -171,7 +171,7 @@ const Section = () => {
                         </Accordion>
                     </Col>
                     <Col xs={12} md={8} xl={9} xxl={10}>
-                        
+
                         {products.length === 0 && <p className='text-center fs-2 text-secondary mb-5'>We don´t have any products under this category yet...</p>}
 
                         <Row xs={1} md={2} xl={3} xxl={4} className='overflow-auto'>
