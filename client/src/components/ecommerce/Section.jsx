@@ -9,9 +9,7 @@ import { faShoppingCart, faHeartCircleMinus, faHeart } from '@fortawesome/free-s
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { LazyLoadImage } from "react-lazy-load-image-component";
-<<<<<<< HEAD
 import Chat from '../Chat';
-=======
 import toast, { Toaster } from 'react-hot-toast';
 
 // Bootstrap
@@ -24,7 +22,6 @@ import Table from 'react-bootstrap/Table';
 import Accordion from 'react-bootstrap/Accordion';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Badge from 'react-bootstrap/Badge';
->>>>>>> main
 
 const Section = () => {
     const { cart, setCart, wishList, setWishList } = useContext(IconsContext);
