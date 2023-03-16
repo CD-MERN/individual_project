@@ -77,6 +77,7 @@ require('./routes/category.route')(app);
 require('./routes/cart.route')(app);
 require('./routes/wishList.route')(app);
 require('./routes/user.route')(app);
+require('./routes/mail.route')(app);
 
 const server = app.listen(8000, () => {
     console.log("Listening at Port 8000");
