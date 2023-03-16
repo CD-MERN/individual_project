@@ -16,7 +16,7 @@ const Portada = () => {
     })
 
     const navLinks = [{
-        title: "Login", path: "/Login", icon: <LoginIcon />
+        title: "Login", path: "/login", icon: <LoginIcon />
     },
     {
         title: "Register", path: "/register", icon: <AppRegistrationIcon />
@@ -25,12 +25,13 @@ const Portada = () => {
 
     return (
         <>
-            <Navbar navLinks={navLinks}/>
+            <Navbar navLinks={navLinks} />
             <Container sx={{
                 height: "100vh", backgroundImage: `url(${image})`,
                 backgroundSize: "contain", backgroundRepeat: "revert", bgcolor: "black", backgroundPosition: "center"
             }}
-                maxWidth="xl">
+                maxWidth="false"
+            >
 
             </Container>
 
