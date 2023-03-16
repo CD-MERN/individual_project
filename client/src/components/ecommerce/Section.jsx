@@ -9,6 +9,7 @@ import { faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import Chat from '../Chat';
 
 const Section = () => {
     const { cart, setCart, wishList, setWishList } = useContext(IconsContext);
@@ -184,6 +185,7 @@ const Section = () => {
                     </div>
                 </div>
             </div>
+            <Chat />
         </section>
     )
 }

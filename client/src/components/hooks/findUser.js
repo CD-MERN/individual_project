@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 export default function useFindUser() {
     const [user, setUser] = useState(null);
-    const [isLoading, setLoading] = useState(true); useEffect(() => {
+    const [isLoading, setLoading] = useState(true);
+    useEffect(() => {
         async function findUser() {
             await axios.get('http://localhost:8000/api/user')
                 .then(res => {
@@ -12,8 +13,6 @@ export default function useFindUser() {
                     setLoading(false);
                 });
         } findUser();
-    }, []); return {
-        user,
-        isLoading
-    }
+    }, []);
+    return { user, isLoading };
 }
