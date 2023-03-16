@@ -13,14 +13,18 @@ import { default as CategoriesForm } from './components/admin/categories/Form';
 import Login from './components/Login';
 import Register from './components/Register';
 import { IconsContextProvider } from "./contexts/IconsContext";
+import Portada from './components/Portada';
+import Navbar from './components/Navbar';
 
 const App = () => {
   return (
-    <div className="App d-flex flex-column vh-100">
+    
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/portada' element={<Portada />} />
+
 
 
           <Route path="/ecommerce" element={
@@ -50,7 +54,7 @@ const App = () => {
           <Route path="/admin/categories/:id/edit" element={<CategoriesForm editMode={true} />} />
         </Routes>
       </BrowserRouter>
-    </div>
+
   );
 }
 
