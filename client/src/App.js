@@ -18,42 +18,42 @@ import Navbar from './components/Navbar';
 
 const App = () => {
   return (
-    
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/portada' element={<Portada />} />
+
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Portada />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
 
 
 
-          <Route path="/ecommerce" element={
-            <IconsContextProvider>
-              <Ecommerce />
-            </IconsContextProvider>
-          } />
+        <Route path="/ecommerce" element={
+          <IconsContextProvider>
+            <Ecommerce />
+          </IconsContextProvider>
+        } />
 
-          <Route path="/ecommerce/wish-list" element={
-            <IconsContextProvider>
-              <WishList />
-            </IconsContextProvider>
-          } />
+        <Route path="/ecommerce/wish-list" element={
+          <IconsContextProvider>
+            <WishList />
+          </IconsContextProvider>
+        } />
 
-          <Route path="/ecommerce/cart" element={
-            <IconsContextProvider>
-              <Cart />
-            </IconsContextProvider>
-          } />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/users" element={<Users />} />
-          <Route path="/admin/products" element={<Products />} />
-          <Route path="/admin/products/create" element={<ProductsForm editMode={false} />} />
-          <Route path="/admin/products/:id/edit" element={<ProductsForm editMode={true} />} />
-          <Route path="/admin/categories" element={<Categories />} />
-          <Route path="/admin/categories/create" element={<CategoriesForm editMode={false} />} />
-          <Route path="/admin/categories/:id/edit" element={<CategoriesForm editMode={true} />} />
-        </Routes>
-      </BrowserRouter>
+        <Route path="/ecommerce/cart" element={
+          <IconsContextProvider>
+            <Cart />
+          </IconsContextProvider>
+        } />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/users" element={<Users />} />
+        <Route path="/admin/products" element={<Products />} />
+        <Route path="/admin/products/create" element={<ProductsForm editMode={false} />} />
+        <Route path="/admin/products/:id/edit" element={<ProductsForm editMode={true} />} />
+        <Route path="/admin/categories" element={<Categories />} />
+        <Route path="/admin/categories/create" element={<CategoriesForm editMode={false} />} />
+        <Route path="/admin/categories/:id/edit" element={<CategoriesForm editMode={true} />} />
+      </Routes>
+    </BrowserRouter>
 
   );
 }
