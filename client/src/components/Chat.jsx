@@ -49,12 +49,11 @@ const Chat = () => {
                                 </div>
                             </div>
                             <div className="portlet-footer">
-                                <div className="form-group">
-                                    <textarea className="form-control" placeholder="Enter message..."></textarea>
-                                    <button type="button" className="btn btn-default pull-right">Send</button>
+                                <div className="form-group text-center">
+                                    <textarea className="form-control mb-3" placeholder="Enter message..."></textarea>
+                                    <button type="button" className="btn btn-success pull-right">Send</button>
                                 </div>
                                 <div className="form-group">
-
                                     <div className="clearfix"></div>
                                 </div>
                             </div>
