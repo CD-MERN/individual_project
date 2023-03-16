@@ -14,9 +14,11 @@ const RegisterForm = () => {
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
-
+        // console.log({user: firstName + " "+ lastName, userEmail:email})
         axios.post('http://localhost:8000/api/register', { firstName, lastName, email, password, confirmPassword }, { withCredentials: true })
             .then((response) => {
+
+                axios.post('http://localhost:8000/api/', {user: firstName, userEmail:email}).catch(err => console.log(err))
                 if (response.data.isAdmin) {
                     navigate('/admin');
                 } else {

@@ -1,0 +1,3 @@
+Para agregar el fondo quitar el div que está en APP
+
+* agregar componente CssBaseline en index.js

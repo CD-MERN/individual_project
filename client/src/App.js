@@ -15,13 +15,16 @@ import Register from './components/Register';
 import EcommerceRoute from './routes/EcommerceRoute';
 import AdminRoute from './routes/AdminRoute';
 import AuthenticateRoute from './routes/AuthenticateRoute';
+import Portada from './components/Portada';
+import Navbar from './components/Navbar';
 
 const App = () => {
   return (
     <div className="App d-flex flex-column vh-100">
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<Portada />} />
+          <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route element={<AuthenticateRoute />}>
             {/* ECOMMERCE */}
