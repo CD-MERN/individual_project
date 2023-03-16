@@ -7,7 +7,7 @@ import Footer from '../Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 const List = () => {
     const [users, setUsers] = useState([]);
@@ -26,12 +26,29 @@ const List = () => {
             })
             .catch((error) => console.log("Error", error));
     }
+
+    const remove = userID => {
+        axios.delete(`http://localhost:8000/api/user/${userID}`, { withCredentials: true })
+            .then(() => {
+                setUsers(users.filter(user => user._id !== userID))
+            })
+            .catch((error) => console.log("Error", error));
+    }
+
     return (
         <>
             <Navbar></Navbar>
             <h3 className='text-center'>Users</h3>
             <div className='container'>
                 <div className='card'>
+                <div className='card-header'>
+                        <OverlayTrigger
+                            placement="bottom"
+                            overlay={<Tooltip>Add New</Tooltip>}
+                        >
+                            <Link className='btn btn-success' to="/admin/user/create"><FontAwesomeIcon icon={faPlus} /></Link>
+                        </OverlayTrigger>
+                    </div>
                     <div className='card-body'>
                         <table className="table table-hover table-striped table-sm table-borderless">
                             <thead>
@@ -62,6 +79,13 @@ const List = () => {
                                                     to={`/admin/user/${user._id}/edit`}
                                                 ><FontAwesomeIcon icon={faEdit} /></Link>
                                             </OverlayTrigger>
+                                            <OverlayTrigger
+                                                placement="bottom"
+                                                overlay={<Tooltip>Delete User</Tooltip>}
+                                            >
+                                                <button type='button' onClick={() => remove(user._id)} className='btn btn-secondary'><FontAwesomeIcon icon={faTrash} /></button>
+                                            </OverlayTrigger>
+
                                         </span></td>
                                     </tr>
 
