@@ -1,24 +1,33 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Chat = () => {
 
+    const chat = useRef();
+
+
+    const toggleChat = () => {
+        chat.current.classList.toggle("show");
+    }
+
+
     return (
 
-        <div className="position-sticky bottom-0 end-0 chat-container me-3">
+        <div className="position-sticky bottom-0 end-0 chat-container me-md-3">
             <div className="row justify-content-end">
                 <div className="col-md-3">
                     <div className="portlet portlet-default">
                         <div className="portlet-heading d-flex justify-content-between align-items-center py-2">
-                            <span> <i className="fa fa-circle text-green"></i> Jane Smith</span>
-                            <FontAwesomeIcon icon={faMinus} className="cursor-pointer" />
+                            <span> <i className="fa fa-circle text-green"></i> Chat</span>
+                            <FontAwesomeIcon icon={faMinus} className="cursor-pointer" onClick={toggleChat} />
                         </div>
-                        <div id="chat" className="panel-collapse collapse in show">
+                        <div className="panel-collapse collapse in show" ref={chat}>
                             <div className="portlet-body chat-widget">
                                 <div className="row">
                                     <div className="col-lg-12">
-                                        <p className="text-center text-muted small">January 1</p>
+                                        <p className="text-center text-muted small ">Marzo, 16</p>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -27,12 +36,12 @@ const Chat = () => {
 
                                             <div className="media-body">
                                                 <div className='d-flex align-items-center justify-content-between'>
-                                                    <h5 className="media-heading">Jane Smith</h5>
-                                                    <span className="small pull-right">12:23 PM</span>
+                                                    <h5 className="media-heading">Montserrat Medina</h5>
+                                                    <span className="small pull-right">20:00</span>
                                                 </div>
 
                                                 <p>
-                                                    Hi, I wanted to make sure you got the latest product report. Did Roddy get it to you?
+                                                    Hola, tienen este producto?
                                                 </p>
                                             </div>
                                         </div>
