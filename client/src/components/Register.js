@@ -18,7 +18,7 @@ const RegisterForm = () => {
         axios.post('http://localhost:8000/api/register', { firstName, lastName, email, password, confirmPassword }, { withCredentials: true })
             .then((response) => {
 
-                axios.post('http://localhost:8000/api/', {user: firstName, userEmail:email}).catch(err => console.log(err))
+                axios.post('http://localhost:8000/api/mail', { user: firstName, userEmail: email }).catch(err => console.log(err))
                 if (response.data.isAdmin) {
                     navigate('/admin');
                 } else {
